@@ -160,8 +160,8 @@
         </configuration>
         <executions>
           <execution>
-            <id>allure-plugin</id>
-            <phase>install</phase>
+            <id>allure-report</id>
+            <phase>post-integration-test</phase>
             <goals>
               <goal>report</goal>
             </goals>
@@ -169,30 +169,30 @@
         </executions>
       </plugin>
 
-<!--      <plugin>-->
-<!--        <artifactId>maven-resources-plugin</artifactId>-->
-<!--        <version>${maven-resources-plugin}</version>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <id>copy-resources</id>-->
-<!--            <phase>validate</phase>-->
-<!--            <goals>-->
-<!--              <goal>copy-resources</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              <outputDirectory>${project.build.directory}/reports/allure-results</outputDirectory>-->
-<!--              <resources>-->
-<!--                <resource>-->
-<!--                  <directory>src/test/resources</directory>-->
-<!--                  <includes>-->
-<!--                    <include>environment.properties</include>-->
-<!--                  </includes>-->
-<!--                </resource>-->
-<!--              </resources>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--      </plugin>-->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin}</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/reports/allure-results</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/test/resources</directory>
+                  <includes>
+                    <include>environment.properties</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
     </plugins>
   </build>
