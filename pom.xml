@@ -21,19 +21,15 @@
     <!-- Version Java -->
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-
-    <selenium.version>4.10.0</selenium.version>
-    <junit.jupiter.version>5.9.1</junit.jupiter.version>
-    <cucumber>7.0.0</cucumber>
-    <junit.jupiter.version>5.9.1</junit.jupiter.version>
-    <junit-vintage-engine>5.9.1</junit-vintage-engine>
-    <allure-cucumber7-jvm>2.17.0</allure-cucumber7-jvm>
-    <slf4j-simple>1.7.30</slf4j-simple>
+    <maven-compiler-plugin>3.6.1</maven-compiler-plugin>
+    <maven-surefire-plugin>3.0.0-M5</maven-surefire-plugin>
     <aspectj.version>1.9.19</aspectj.version>
-    <maven-compiler-plugin>3.8.1</maven-compiler-plugin>
-    <maven-surefire-plugin>2.22.2</maven-surefire-plugin>
+    <junit-jupiter-engine>5.10.0</junit-jupiter-engine>
+    <allure-junit5>2.16.1</allure-junit5>
     <allure-maven>2.10.0</allure-maven>
-    <maven-resources-plugin>3.2.0</maven-resources-plugin>
+    <slf4j-simple>1.7.30</slf4j-simple>
+    <selenium.version>4.10.0</selenium.version>
+    <cucumber>7.0.0</cucumber>
   </properties>
 
   <dependencies>
@@ -44,11 +40,32 @@
       <artifactId>selenium-java</artifactId>
       <version>${selenium.version}</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${slf4j-simple}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>${aspectj.version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${junit.jupiter.version}</version>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.10.0</version>
+    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>io.qameta.allure</groupId>-->
+<!--      <artifactId>allure-junit5</artifactId>-->
+<!--      <version>${allure-junit5}</version>-->
+<!--    </dependency>-->
+    <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-cucumber7-jvm -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-cucumber7-jvm</artifactId>
+      <version>2.17.0</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
     <dependency>
@@ -60,7 +77,7 @@
     <dependency>
       <groupId>org.junit.vintage</groupId>
       <artifactId>junit-vintage-engine</artifactId>
-      <version>5.9.1</version>
+      <version>5.10.0</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-core -->
     <dependency>
@@ -72,38 +89,10 @@
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-java</artifactId>
-      <version>${cucumber}</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-cucumber7-jvm -->
-    <dependency>
-      <groupId>io.qameta.allure</groupId>
-      <artifactId>allure-cucumber7-jvm</artifactId>
-      <version>2.17.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>${slf4j-simple}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjweaver</artifactId>
-      <version>${aspectj.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.1</version>
-      <scope>test</scope>
+      <version>5.7.0</version>
     </dependency>
 
   </dependencies>
-
-
-
   <build>
     <plugins>
       <plugin>
@@ -121,6 +110,8 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven-surefire-plugin}</version>
         <configuration>
+          <testFailureIgnore>true</testFailureIgnore>
+          <includes>**/CucumberRunner.java</includes>
           <argLine>
             <!-- Сколько оперативной памяти выделяем для запуска тестов -->
             -Xmx1024m
@@ -128,17 +119,16 @@
             -Dfile.encoding=${encoding.type}
             -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
             -Dcucumber.options="--plugin io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
-          </argLine>
-          <testFailureIgnore>true</testFailureIgnore>
-          <!-- Маска файликов, которые будут запущенны  -->
-          <includes>**/CucumberRunner.java</includes>
+                     </argLine>
           <systemPropertyVariables>
-            <allure.results.directory>${project.build.directory}/reports/allure-results</allure.results.directory>
-            <allure.link.issues.pattern>https://example.org/browse/{}</allure.link.issues.pattern>
-            <allure.link.tms.pattern>https://example.org/browse/{}</allure.link.tms.pattern>
+            <!--                       путь, где сохранить отчет результатов -->
+            <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+<!--            <allure.link.issues.pattern>https://example.org/browse/{}</allure.link.issues.pattern>-->
+<!--            <allure.link.tms.pattern>https://example.org/browse/{}</allure.link.tms.pattern>-->
           </systemPropertyVariables>
         </configuration>
         <dependencies>
+          <!-- Дополнительная библиотека(подключаем, чтобы она скачалась из глобального депозитория)-->
           <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
@@ -147,53 +137,119 @@
         </dependencies>
       </plugin>
 
-
-      <!-- Плагин, который отвечает за формирование сайта Allure отчета -->
       <plugin>
         <groupId>io.qameta.allure</groupId>
         <artifactId>allure-maven</artifactId>
         <version>${allure-maven}</version>
         <configuration>
           <reportVersion>2.10.0</reportVersion>
-          <resultsDirectory>${project.build.directory}/reports/allure-results</resultsDirectory>
-          <reportDirectory>${project.build.directory}/reports/allure-reports</reportDirectory>
+          <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+          <reportDirectory>${project.build.directory}/allure-reports</reportDirectory>
         </configuration>
         <executions>
           <execution>
             <id>allure-report</id>
-            <phase>post-integration-test</phase>
+            <phase>install</phase>
             <goals>
               <goal>report</goal>
             </goals>
           </execution>
         </executions>
       </plugin>
-
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>${maven-resources-plugin}</version>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/reports/allure-results</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>src/test/resources</directory>
-                  <includes>
-                    <include>environment.properties</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
     </plugins>
   </build>
+
+<!--старая настройка-->
+<!--  <build>-->
+<!--    <plugins>-->
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-compiler-plugin</artifactId>-->
+<!--        <version>${maven-compiler-plugin}</version>-->
+<!--        <configuration>-->
+<!--          <source>${maven.compiler.source}</source>-->
+<!--          <target>${maven.compiler.target}</target>-->
+<!--        </configuration>-->
+<!--      </plugin>-->
+<!--      &lt;!&ndash; Плагин отвечает за запуск тестов и сбор информации о состоянии тестов которые были запущенны &ndash;&gt;-->
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-surefire-plugin</artifactId>-->
+<!--        <version>${maven-surefire-plugin}</version>-->
+<!--        <configuration>-->
+<!--          <argLine>-->
+<!--            &lt;!&ndash; Сколько оперативной памяти выделяем для запуска тестов &ndash;&gt;-->
+<!--            -Xmx1024m-->
+<!--            &lt;!&ndash; Кодировка всех файлов &ndash;&gt;-->
+<!--            -Dfile.encoding=${encoding.type}-->
+<!--            -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar-->
+<!--            -Dcucumber.options="&#45;&#45;plugin io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"-->
+<!--          </argLine>-->
+<!--          <testFailureIgnore>true</testFailureIgnore>-->
+<!--          &lt;!&ndash; Маска файликов, которые будут запущенны  &ndash;&gt;-->
+<!--          <includes>**/CucumberRunner.java</includes>-->
+<!--          <systemPropertyVariables>-->
+<!--            <allure.results.directory>${project.build.directory}/reports/allure-results</allure.results.directory>-->
+<!--            <allure.link.issues.pattern>https://example.org/browse/{}</allure.link.issues.pattern>-->
+<!--            <allure.link.tms.pattern>https://example.org/browse/{}</allure.link.tms.pattern>-->
+<!--          </systemPropertyVariables>-->
+<!--        </configuration>-->
+<!--        <dependencies>-->
+<!--          <dependency>-->
+<!--            <groupId>org.aspectj</groupId>-->
+<!--            <artifactId>aspectjweaver</artifactId>-->
+<!--            <version>${aspectj.version}</version>-->
+<!--          </dependency>-->
+<!--        </dependencies>-->
+<!--      </plugin>-->
+
+
+<!--      &lt;!&ndash; Плагин, который отвечает за формирование сайта Allure отчета &ndash;&gt;-->
+<!--      <plugin>-->
+<!--        <groupId>io.qameta.allure</groupId>-->
+<!--        <artifactId>allure-maven</artifactId>-->
+<!--        <version>${allure-maven}</version>-->
+<!--        <configuration>-->
+<!--          <reportVersion>2.10.0</reportVersion>-->
+<!--          <resultsDirectory>${project.build.directory}/reports/allure-results</resultsDirectory>-->
+<!--          <reportDirectory>${project.build.directory}/reports/allure-reports</reportDirectory>-->
+<!--        </configuration>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>allure-report</id>-->
+<!--            <phase>post-integration-test</phase>-->
+<!--            <goals>-->
+<!--              <goal>report</goal>-->
+<!--            </goals>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
+
+<!--      <plugin>-->
+<!--        <artifactId>maven-resources-plugin</artifactId>-->
+<!--        <version>${maven-resources-plugin}</version>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>copy-resources</id>-->
+<!--            <phase>validate</phase>-->
+<!--            <goals>-->
+<!--              <goal>copy-resources</goal>-->
+<!--            </goals>-->
+<!--            <configuration>-->
+<!--              <outputDirectory>${project.build.directory}/reports/allure-results</outputDirectory>-->
+<!--              <resources>-->
+<!--                <resource>-->
+<!--                  <directory>src/test/resources</directory>-->
+<!--                  <includes>-->
+<!--                    <include>environment.properties</include>-->
+<!--                  </includes>-->
+<!--                </resource>-->
+<!--              </resources>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
+
+<!--    </plugins>-->
+<!--  </build>-->
 </project>
