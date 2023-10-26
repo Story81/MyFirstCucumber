@@ -35,32 +35,35 @@ public class AssertFilledFieldsBTripPage extends BasePage {
     @FindBy(xpath = "//span[@class='validation-failed']")
     private WebElement validationMessage;
 
-    //    @Step
-    public void assertFilledField() {
+
+    public void assertFilledField(String devision) {
         assertAll("!!! Поле заполнено неверно: ",
                 () -> assertEquals("Отдел внутренней разработки",
                         divisionField.getText(), "Подразделение!!!"),
-                () -> assertEquals("(Хром) Призрачная Организация Охотников",
+                () -> assertEquals(devision,
                         nameCompany.getText(), "Организация"),
-                () -> assertEquals(properties.getProperty("Checkbox"),
-                        checkBoxTickets.getAttribute("checked"), "чекбокс: Заказ билетов"),
-                () -> assertEquals(properties.getProperty("inputDepartureCity"),
-                        departureCity.getAttribute("value"), "Город выбытия"),
-                () -> assertEquals(properties.getProperty("inputArrivalCity"),
-                        arrivalCity.getAttribute("value"), "Город прибытия"),
-                () -> assertEquals(properties.getProperty("departureDate"),
-                        dateField.getAttribute("value"), "Даты выбытия"),
-                () -> assertEquals(properties.getProperty("returnDate"),
-                        returnDateField.getAttribute("value"), "Даты прибытия"));
+                () -> assertEquals("true",
+                        checkBoxTickets.getAttribute("checked"), "чекбокс: Заказ билетов"));
     }
 
-    //    @Step(value = "Нажать на кнопку'Сохранить' ")
+    public void assertFilledFieldOfCity(String inputArrivalCity, String inputDepartureCity)  {
+        assertAll("!!! Поле (город прибытия/выбытия) заполнено неверно: ",
+                () -> assertEquals(inputDepartureCity, departureCity.getAttribute("value"), "Город выбытия"),
+                () -> assertEquals(inputArrivalCity, arrivalCity.getAttribute("value"), "Город прибытия"));
+
+    }
+    public void assertFilledFieldOfDate(String returnDate, String departureDate) {
+        assertAll("!!! Поле (дата прибытия/выбытия) заполнено неверно: ",
+                () -> assertEquals(departureDate, dateField.getAttribute("value"), "Даты выбытия"),
+                () -> assertEquals(returnDate, returnDateField.getAttribute("value"), "Даты прибытия"));
+    }
+
     public void saveAndClose() {
         saveAndCloseBtn.click();
         loading();
     }
 
-    //    @Step (value = "Проверка отображения сообщения о незаполненном поле")
+    //    Проверка отображения сообщения о незаполненном поле
     public void assertMessage() {
         validationMessage.click();
         String validation_failed = "Список командируемых сотрудников не может быть пустым";

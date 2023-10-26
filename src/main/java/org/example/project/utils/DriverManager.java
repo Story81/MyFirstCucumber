@@ -23,8 +23,6 @@ public class DriverManager {
     }
 
     public static void initDriver() {
-
-
         setProperty(properties.getProperty("WEB_DRIVER"), properties.getProperty("WEB_DRIVER_PATH"));
         driver = new ChromeDriver();
         driver.get(properties.getProperty("HOSTNAME"));

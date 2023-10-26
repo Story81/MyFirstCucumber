@@ -6,7 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static java.time.Duration.ofSeconds;
-//import static org.example.project.DriverManager.getWebDriver;
+
 import static org.example.project.utils.DriverManager.getWebDriver;
 import static org.openqa.selenium.support.PageFactory.initElements;
 

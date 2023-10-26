@@ -19,14 +19,12 @@ public class LoginPage extends BasePage {
     @FindBy(xpath = "//h1[@class='oro-subtitle']")
     private WebElement subtitle;
 
-    //    @Step(value = "Ввести значения логина и пароля")
     public void enterLoginAndPassword(String login, String password) {
         wait.until(visibilityOf(loginFormWindow));
         loginRow.sendKeys(login);
         passwordRow.sendKeys(password);
     }
 
-    //    @Step(value = "Подтверждение входа")
     public void submitClick() {
         submitButton.click();
         wait.until(visibilityOf(subtitle));

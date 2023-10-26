@@ -17,10 +17,10 @@ public class Hooks {
         String screenshotName = scenario.getName().replace(" ", "_");
         try {
             if (scenario.isFailed()){
-                scenario.log(("Alarma!"));
                 TakesScreenshot ts = (TakesScreenshot) driver;
                 byte[] screenshot = ts.getScreenshotAs(OutputType.BYTES);
                 scenario.attach(screenshot, "image/png", screenshotName);
+                scenario.log(("Alarma!"));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,21 +1,25 @@
 @all
 @severity=blocked
+@Owner=Applana
+@TmsLink=123
+
 Feature: Проверка оформления командировки
 
   @Командировка
-
   Scenario Outline: Проверка страницы создания командировки
     * Открыта страница авторизации: вводим логин "<login>", пароль "<password>"
     * Открываем страницу оформления заявки на новую командировку
-    * Выбираем подразделение
+    * Выбираем подразделение "<division>"
     * Заполняем поля командировки: город прибытия "<arrivalCity>", город выбытия "<departureCity>", дата выбытия "<departureDate>", дата прибытия "<returnDate>"
     * Активируем чекбокс 'Заказ билетов'
-    * Проверяем заполненные поля командировки
+    * Проверяем значения заполненных полей: город прибытия "<arrivalCity>", город выбытия "<departureCity>"
+    * Проверяем значения заполненных полей: дата выбытия "<returnDate>", дата прибытия "<departureDate>"
+    * Проверяем значения остальных заполненных полей: чекбокс, подразделение "<division>"
     * Нажать "Сохранить и закрыть"
     * Проверяем отображение сообщения о наличии незаполненных полей
 
     Examples:
-      | login              | password | arrivalCity | departureCity | returnDate | departureDate |
-      | Taraskina Valeriya | testing  | Murmansk    | Omsk          | 09.12.2023 | 10.11.2023    |
+      | login              | password | arrivalCity | departureCity | returnDate | departureDate | division                                |
+      | Taraskina Valeriya | testing  | Мурманск    | Омск          | 09.12.2023 | 10.11.2023    | (Хром) Призрачная Организация Охотников |
 
 

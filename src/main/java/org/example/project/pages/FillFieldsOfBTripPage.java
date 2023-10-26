@@ -1,6 +1,7 @@
 package org.example.project.pages;
 
 import org.example.project.utils.BasePage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,8 +17,8 @@ public class FillFieldsOfBTripPage extends BasePage {
     @FindBy(xpath = "//span[@class='select2-chosen']")      //список
     private WebElement fieldCompany;
 
-    @FindBy(xpath = "//div[text()='(Хром) Призрачная Организация Охотников']")
-    private WebElement nameCompany;
+//    @FindBy(xpath = "//div[text()='(Хром) Призрачная Организация Охотников']")
+//    private WebElement nameCompany;
 
     @FindBy(xpath = "//input[@data-name='field__1']")        //чекбокс "Заказ билетов"
     private WebElement checkBoxTickets;
@@ -35,23 +36,21 @@ public class FillFieldsOfBTripPage extends BasePage {
 
 
     // Заполнение полей командировки
-//    @Step(value = "Заполнение полей страницы создания новой командировки")
-    public void FilledFieldBTrip_Division() {
+
+    public void FilledFieldBTrip_Division(String division) {
 
         divisionField.click();                         //Поле Подразделение
         listOfCompanies.click();                       //кнопка Выбрать организацию из списка
         fieldCompany.click();
-        nameCompany.click();
-//        arrivalCity.sendKeys(inputArrivalCity);        // Заполнение поля "Город прибытия"
-//        departureCity.clear();
-//        departureCity.sendKeys(inputDepartureCity);     // Заполнение поля "Город прибытия"
-//        dateField.sendKeys(departureDate);              // Заполнение поля "Планируемая дата выезда*"
-//        returnDateField.sendKeys(returnDate);           //Заполнение поля "Планируемая дата возвращения
-//        returnDateField.sendKeys(Keys.ESCAPE);          // закрытие календаря
+        String xpathDivisionName = "//div[text()='" + division + "']";
+        driver.findElement(By.xpath(xpathDivisionName)).click();
+
     }
+
     public void FilledFieldBTrip_Tickets() {
         checkBoxTickets.click();                       //Проставление чек-бокса "Заказ билетов"
     }
+
     public void FilledFieldBTrip_Date(String inputArrivalCity, String inputDepartureCity, String departureDate, String returnDate) {
         arrivalCity.sendKeys(inputArrivalCity);        // Заполнение поля "Город прибытия"
         departureCity.clear();
